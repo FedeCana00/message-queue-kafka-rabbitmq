@@ -1,4 +1,12 @@
 # Message queue: Kafka and RabbitMQ
+## Table of Contents
+1. [Introduction](#introduction)
+2. [Apache Kafka](#apache-kafka)
+3. [RabbitMQ](#rabbitmq)
+4. [Comparison between RabbitMQ and Kafka](#comparison-between-rabbitmq-and-kafka)
+5. [Similarities between Kafka and RabbitMQ](#similarities-between-kafka-and-rabbitmq)
+6. [When to use Kafka or RabbitMQ](#when-to-use-kafka-or-rabbitmq)
+## Introduction
 Kafka and RabbitMQ are message queue systems that you can use in stream processing. 
 A data stream consists of high-volume, continuous, incremental data that requires high-speed processing. 
 
