@@ -11,9 +11,7 @@ import java.util.List;
 public class RabbitMQConfig {
     public static final String EXCHANGE_NAME = "topicExchange";
     public static final String ALTERNATE_EXCHANGE = "alternateExchange";
-    public static final String QUEUE_NAME_2 = "queue2";
     public static final String QUEUE_NAME_UNROUTED = "queueUnrouted";
-    public static final String ROUTING_KEY_2 = "*.woman.*";
 
     @Bean
     public FanoutExchange alternateExchange() {
@@ -29,18 +27,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue queue2() {
-        return new Queue(QUEUE_NAME_2, false);
-    }
-
-    @Bean
     public Queue queueUnrouted() {
         return new Queue(QUEUE_NAME_UNROUTED, false);
-    }
-
-    @Bean
-    public Binding binding2(Queue queue2, TopicExchange exchange) {
-        return BindingBuilder.bind(queue2).to(exchange).with(ROUTING_KEY_2);
     }
 
     @Bean

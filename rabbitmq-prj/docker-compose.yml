@@ -4,7 +4,6 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8083
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -14,7 +13,6 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8084
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -24,7 +22,15 @@ services:
     mem_limit: 512m
     environment:
       - SPRING_PROFILES_ACTIVE=docker
-      - SERVER_PORT=8085
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+  unrouted-consumer:
+    build: unrouted-consumer
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
     depends_on:
       rabbitmq:
         condition: service_healthy
