@@ -13,10 +13,11 @@ public class RabbitMQConfig {
     public static final String ALTERNATE_EXCHANGE = "alternateExchange";
     public static final String DL_EXCHANGE = "dlExchange";
     public static final String QUEUE_NAME_1 = "queue1";
-    public static final String QUEUE_NAME_UNROUTED = "queueUnrouted";
+    public static final String QUEUE_NAME_2 = "queue2";
     public static final String QUEUE_DL = "queueDL";
     public static final String ROUTING_KEY_1A = "*.man.*";
     public static final String ROUTING_KEY_1B = "hat.#";
+    public static final String ROUTING_KEY_2 = "*.woman.*";
     public static final long MAX_QUEUE_LENGTH = 10;
 
     @Bean
@@ -47,8 +48,11 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Queue queueUnrouted() {
-        return new Queue(QUEUE_NAME_UNROUTED, false);
+    public Queue queue2() {
+        return QueueBuilder.nonDurable(QUEUE_NAME_2)
+                .deadLetterExchange(DL_EXCHANGE)
+                .maxLength(MAX_QUEUE_LENGTH)
+                .build();
     }
 
     @Bean
@@ -67,8 +71,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding bindingUnrouted(Queue queueUnrouted, FanoutExchange alternateExchange) {
-        return BindingBuilder.bind(queueUnrouted).to(alternateExchange);
+    public Binding binding2(Queue queue2, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue2).to(topicExchange).with(ROUTING_KEY_2);
     }
 
     @Bean

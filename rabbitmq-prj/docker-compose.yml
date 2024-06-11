@@ -35,6 +35,15 @@ services:
       rabbitmq:
         condition: service_healthy
 
+  dl-consumer:
+    build: dl-consumer
+    mem_limit: 512m
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
   rabbitmq:
     image: rabbitmq:latest
     mem_limit: 512m
