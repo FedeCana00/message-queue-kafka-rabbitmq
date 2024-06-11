@@ -1,6 +1,6 @@
 # RabbitMQ project
 
-![RabbitMQ project architecture](../img/rabbitmq-architecture.png)
+![RabbitMQ project architecture](../img/rabbitmq-prj-architecture.png)
 
 The system comprises five distinct microservices, each fulfilling a unique role within the broader ecosystem.
 
