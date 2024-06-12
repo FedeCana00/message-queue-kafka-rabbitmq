@@ -11,6 +11,7 @@ spring:
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: com.baeldung.ls.common.OrderSerializer
+      acks: all
 
 
 spring.cloud.stream:
