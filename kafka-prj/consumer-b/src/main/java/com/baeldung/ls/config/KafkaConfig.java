@@ -1,8 +1,12 @@
 package com.baeldung.ls.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
+import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.KafkaOperations;
 import org.springframework.kafka.listener.CommonErrorHandler;
@@ -12,7 +16,10 @@ import org.springframework.util.backoff.FixedBackOff;
 
 @Configuration
 public class KafkaConfig {
+    private static final Logger LOG = LoggerFactory.getLogger(KafkaConfig.class);
+
     public static final String TOPIC_ORDERS = "topicOrders";
+    public static final String TOPIC_ORDERS_DLT = "topicOrders.DLT";
     public static final String GROUP_ID = "orders-group";
 
     @Bean
@@ -21,6 +28,19 @@ public class KafkaConfig {
                 .partitions(5)
                 .replicas(1)
                 .build();
+    }
+
+    @Bean
+    public NewTopic ordersDLT() {
+        return TopicBuilder.name(TOPIC_ORDERS_DLT)
+                .partitions(5)
+                .replicas(1)
+                .build();
+    }
+
+    @KafkaListener(id = "errorHandler", topics = TOPIC_ORDERS_DLT)
+    public void errorDLT(ConsumerRecord<?, ?> record) {
+        LOG.info(String.format("DLT received: %s", record.value()));
     }
 
     @Bean

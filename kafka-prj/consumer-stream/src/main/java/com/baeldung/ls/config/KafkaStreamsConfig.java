@@ -51,14 +51,9 @@ public class KafkaStreamsConfig {
 
     @Bean
     public KStream<String, FootballMatch> kStream(StreamsBuilder kStreamBuilder) {
-
         KStream<String, FootballMatch> stream = kStreamBuilder.stream(KafkaConfig.TOPIC_MATCHES, Consumed.with(Serdes.String(), new FootballMatchSerde()));
-        //Process KStream
-        this.kstreamProcessor.process(stream);
-
-        //Process KTable
-        this.ktableProcessor.process(stream);
-
+        kstreamProcessor.process(stream);
+        ktableProcessor.process(stream);
         return stream;
     }
 }

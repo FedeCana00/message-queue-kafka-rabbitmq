@@ -12,7 +12,6 @@ public class KStreamProcessor {
     public static final String TEAM_STATISTICS = Teams.TEAMS.get(0).getName();
 
     public void process(KStream<String, FootballMatch> stream){
-
         // KSTREAM FILTER: Filter the Stream to get football matches of a team
         stream.filter((key, object) -> object != null && object.getHomeTeam().getName().equals(TEAM_STATISTICS)).to(KafkaConfig.TOPIC_STATISTICS);
     }

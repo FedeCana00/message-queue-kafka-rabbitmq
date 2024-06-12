@@ -27,7 +27,8 @@ public class StreamsController {
 
         ReadOnlyKeyValueStore<String, Statistics> statistics = kafkaStreams
                 .store(StoreQueryParameters.fromNameAndType(KafkaStreamsConfig.STATISTICS_KEYS_STORE, QueryableStoreTypes.keyValueStore()));
-        return String.format("%s statistics: %s", KStreamProcessor.TEAM_STATISTICS, statistics.get(KStreamProcessor.TEAM_STATISTICS));
+
+        return statistics.get(KStreamProcessor.TEAM_STATISTICS).toString();
     }
 
 }

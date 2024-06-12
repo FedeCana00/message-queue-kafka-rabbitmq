@@ -18,10 +18,8 @@ public class KTableProcessor {
 
     // KTABLE STATE: Create a KTable for statistics of a team
     public void process(KStream<String, FootballMatch> stream){
-
         // Create a new KeyValue Store
-        KeyValueBytesStoreSupplier teamStatistics = Stores.persistentKeyValueStore(
-                KafkaStreamsConfig.STATISTICS_KEYS_STORE);
+        KeyValueBytesStoreSupplier teamStatistics = Stores.inMemoryKeyValueStore(KafkaStreamsConfig.STATISTICS_KEYS_STORE);
 
         KGroupedStream<String, Statistics> teamByStatistics = stream
                 .map((key, footballMatch) -> new KeyValue<>(footballMatch.getHomeTeam().getName()
@@ -34,14 +32,14 @@ public class KTableProcessor {
 
         KTable<String, Statistics> statisticsKTable = teamByStatistics.aggregate(Statistics::new,
                 (k,v, aggregate) -> {
-                    aggregate.setWins(aggregate.getWins() + 1);
-                    aggregate.setLosses(aggregate.getLosses() + 1);
-                    aggregate.setGoalsScore(aggregate.getGoalsScore() + 1);
-                    aggregate.setGoalsConceded(aggregate.getGoalsConceded() + 1);
+                    aggregate.setTeam(v.getTeam());
+                    aggregate.setWins(aggregate.getWins() + v.getWins());
+                    aggregate.setLosses(aggregate.getLosses() + v.getLosses());
+                    aggregate.setGoalsScore(aggregate.getGoalsScore() + v.getGoalsScore());
+                    aggregate.setGoalsConceded(aggregate.getGoalsConceded() + v.getGoalsConceded());
                     return aggregate;
                 }, Materialized.with(Serdes.String(), new StatisticsSerde()));
 
-        final KTable<String, Statistics> wins =
-                statisticsKTable.mapValues(value -> value, Materialized.as(teamStatistics));
+        final KTable<String, Statistics> statistics = statisticsKTable.mapValues(value -> value, Materialized.as(teamStatistics));
     }
 }
