@@ -45,6 +45,8 @@
         <module>producer-end</module>
         <module>consumer-a</module>
         <module>consumer-b</module>
+        <module>producer-stream</module>
+        <module>consumer-stream</module>
     </modules>
 
 </project>
